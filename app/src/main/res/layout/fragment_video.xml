@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.puxin.webplayer.anim.AnimatorFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <com.puxin.webplayer.layout.VideoPlayer
+            android:id="@+id/video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/charProgress"
+            style="@style/myProgressBarStyleLarge"
+            android:layout_width="@dimen/w_150"
+            android:layout_height="@dimen/h_150"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            />
+
+        <TextView
+            android:id="@+id/netSpeed"
+            android:layout_width="@dimen/w_230"
+            android:layout_height="@dimen/h_100"
+            android:padding="@dimen/w_5"
+            android:gravity="center"
+            android:textSize="@dimen/w_42"
+            android:textColor="@color/g3"
+            android:layout_marginTop="@dimen/h_75"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/charProgress"
+            />
+
+        <ImageView
+            android:id="@+id/imageStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/aoz"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+        <include layout="@layout/video_info" />
+        <include layout="@layout/video_button" />
+
+        <com.puxin.webplayer.ui.videoplayer.recycler.MenuRecyclerView
+            android:id="@+id/menu"
+            android:layout_width="@dimen/w_500"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/h_55"
+            android:paddingStart="@dimen/w_80"
+            android:paddingBottom="@dimen/h_50"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/transparent_60"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageView
+            android:id="@+id/playImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/pauseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pause"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+
+
+</com.puxin.webplayer.anim.AnimatorFrameLayout>

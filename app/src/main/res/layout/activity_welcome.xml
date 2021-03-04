@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcomeActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".aty.WelcomeActivity">
+
+    <ImageView
+        android:id="@+id/ivEntry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/launch_page_bg"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/h_300"
+        android:text="最好看的少儿动漫应用"
+        android:textColor="@color/yellow"
+        android:textSize="@dimen/w_60"
+        android:textStyle="bold"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version"
+        android:textColor="@color/white"
+        android:textSize="@dimen/w_40"
+        android:layout_marginStart="@dimen/w_125"
+        android:layout_marginTop="@dimen/h_980"
+        />
+</RelativeLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.puxin.webplayer.layout.ZOrderFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".aty.MainActivity">
+
+
+    <!-- 详情页 Player 容器 -->
+
+    <FrameLayout
+        android:id="@+id/playerLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_zorder="1"
+        >
+
+    </FrameLayout>
+    <!-- 放在上面 以WebView的样式 -->
+
+    <!-- WebView 容器 -->
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_zorder="1"
+        >
+
+    </FrameLayout>
+
+
+</com.puxin.webplayer.layout.ZOrderFrameLayout>
