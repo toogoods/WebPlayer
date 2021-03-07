@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.puxin.webplayer.MyApplication
@@ -37,6 +38,7 @@ import kotlinx.android.synthetic.main.video_info.*
 import kotlinx.coroutines.async
 import tv.danmaku.ijk.media.player.IMediaPlayer
 import java.io.IOException
+import java.lang.ref.WeakReference
 import java.util.*
 
 class PlayerFragment: BaseFragment() {

@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.puxin.webplayer.R
 import com.puxin.webplayer.data.WebViewInfo
 import com.puxin.webplayer.utils.BaseFragment
 import com.puxin.webplayer.utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_webview.*
+import java.lang.ref.WeakReference
 
 class WebViewFragment: BaseFragment() {
     private val TAG = "WebView"
@@ -26,36 +28,25 @@ class WebViewFragment: BaseFragment() {
 
     /************************ handler ************************/
 
+
     /**
      * 播放器相关处理
      * */
-    @SuppressLint("HandlerLeak")
-    val playerHandler = object: Handler(Looper.getMainLooper()) {
+    open class PlayerHandler(looper: Looper, fragment: WebViewFragment): Handler() {
+        private val reference = WeakReference<Fragment>(fragment)
+
         override fun handleMessage(msg: Message) {
+            val fragment = reference.get() as WebViewFragment
             when(msg.what) {
                 1 -> {
-                    webView.setBackgroundColor(0)
-                    webView.setBackgroundResource(0)
-                }
-                2 -> {
-
-                }
-                3 -> {
-
+                    fragment.webView.setBackgroundColor(0)
+                    fragment.webView.setBackgroundResource(0)
                 }
             }
         }
     }
 
-    /**
-     * 免费播放
-     * */
-    @SuppressLint("HandlerLeak")
-    private val timeHandler = object: Handler() {
-        override fun handleMessage(msg: Message) {
-
-        }
-    }
+    val playerHandler = PlayerHandler(Looper.getMainLooper(), this)
 
     /************************ handler ************************/
 

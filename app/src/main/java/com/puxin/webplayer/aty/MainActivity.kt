@@ -1,5 +1,6 @@
 package com.puxin.webplayer.aty
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.puxin.webplayer.ui.webview.WebViewFragment
 import com.puxin.webplayer.utils.BaseActivity
 import com.puxin.webplayer.utils.LogUtil
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.ref.WeakReference
 
 class MainActivity : BaseActivity(), WebViewCallback, PlayerCallback {
 
@@ -46,45 +48,47 @@ class MainActivity : BaseActivity(), WebViewCallback, PlayerCallback {
     var type: String? = null        //播放器窗口类型 "smallWindow" 小窗 "fullScreen" 全屏
 
     //UI message
-    private val SMALLWINDOW = 1
-    private val FULLSCREEN = 2
+    val SMALLWINDOW = 1
+    val FULLSCREEN = 2
+    val DELAYSMALL = 3
 
     /************************ parameter ************************/
 
     /************************ handler ************************/
 
-    private val timerHandler = object: Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message) {
-            when(msg.what) {
-                1 -> {
-                    //延迟处理切换到小窗时, PlayerFragment和WebViewFragment的切换
-                    val playerLayoutParams = playerLayout.layoutParams as ZOrderFrameLayout.Companion.LayoutParams
-                    playerLayoutParams.zOrder = 1
-                    playerLayout.layoutParams = playerLayoutParams
-                    mainLayout.refreshLayout()
-                }
-            }
-        }
-    }
+    /**
+     * 使用静态内部类 + 弱引用实现
+     * */
+    open class MainHandler(looper: Looper, activity: Activity): Handler(looper) {
+        private var reference: WeakReference<Activity> = WeakReference(activity)
 
-    private val UIHandler = object: Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
+            val activity = reference.get() as MainActivity
             when(msg.what) {
-                SMALLWINDOW -> {
-                    playerFragment?.setSmallWindow()
-                    timerHandler.sendMessageDelayed(Message().apply { what = 1 }, 1000)
+                activity.SMALLWINDOW -> {
+                    activity.playerFragment?.setSmallWindow()
+                    //延迟执行切换, 优化体验
+                    activity.mainHandler.sendMessageDelayed(Message().apply { what = activity.DELAYSMALL }, 1000)
                 }
-                FULLSCREEN -> {
-                    val playerLayoutParams = playerLayout.layoutParams as ZOrderFrameLayout.Companion.LayoutParams
+                activity.FULLSCREEN -> {
+                    val playerLayoutParams = activity.playerLayout.layoutParams as ZOrderFrameLayout.Companion.LayoutParams
                     playerLayoutParams.zOrder = 2
-                    playerLayout.layoutParams = playerLayoutParams
-                    mainLayout.refreshLayout()
-                    playerFragment?.fullScreen(msg.arg1)
+                    activity.playerLayout.layoutParams = playerLayoutParams
+                    activity.mainLayout.refreshLayout()
+                    activity.playerFragment?.fullScreen(msg.arg1)
+                }
+                activity.DELAYSMALL -> {
+                    val playerLayoutParams = activity.playerLayout.layoutParams as ZOrderFrameLayout.Companion.LayoutParams
+                    playerLayoutParams.zOrder = 1
+                    activity.playerLayout.layoutParams = playerLayoutParams
+                    activity.mainLayout.refreshLayout()
                 }
             }
         }
     }
 
+
+    val mainHandler = MainHandler(Looper.getMainLooper(), this)
     /************************ handler ************************/
 
     /************************ init ************************/
@@ -120,7 +124,7 @@ class MainActivity : BaseActivity(), WebViewCallback, PlayerCallback {
                     ret || super.onKeyDown(keyCode, event)
                 } else {
                     //大屏播放返回键
-                    UIHandler.sendMessage(Message().apply { what = SMALLWINDOW })
+                    mainHandler.sendMessage(Message().apply { what = SMALLWINDOW })
                     type = "smallWindow"
                     super.onKeyDown(keyCode, event)
                 }
@@ -177,7 +181,7 @@ class MainActivity : BaseActivity(), WebViewCallback, PlayerCallback {
 
     override fun play(position: Int) {
 
-        UIHandler.sendMessage(Message().apply {
+        mainHandler.sendMessage(Message().apply {
             what = FULLSCREEN
             arg1 = position
         })
